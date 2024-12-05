@@ -1,1 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Dashboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background-color: #f4f4f4; }
+  </style>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <table id="dataTable">
+    <thead>
+      <tr id="tableHeader"></tr>
+    </thead>
+    <tbody id="tableBody"></tbody>
+  </table>
+
+  <script>
+    const scriptUrl = "YOUR_APPS_SCRIPT_URL"; // Replace with your Apps Script URL
+
+    fetch(scriptUrl)
+      .then(response => response.json())
+      .then(data => {
+        const headers = data[0]; // Assuming the first row is headers
+        const rows = data.slice(1); // Remaining rows are data
+
+        // Populate table headers
+        const headerRow = headers.map(header => `<th>${header}</th>`).join("");
+        document.getElementById("tableHeader").innerHTML = headerRow;
+
+        // Populate table rows
+        const tableRows = rows.map(row => `<tr><td>${row.join("</td><td>")}</td></tr>`).join("");
+        document.getElementById("tableBody").innerHTML = tableRows;
+      })
+      .catch(error => console.error("Error fetching data:", error));
+  </script>
+</body>
+</html>
 
